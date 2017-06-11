@@ -162,7 +162,7 @@
         }).addTo(map);
 
         // AJAX request for GeoJSON data
-        $.getJSON("data/or-counties.json", function(counties) {
+        $.getJSON("data/elec2016_calc.geojson", function(counties) {
 
             // AJAX reqeuest and parsing of CSV data
             Papa.parse('data/or-unemployment-rates.csv', {
