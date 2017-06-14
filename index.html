@@ -163,7 +163,7 @@
 
 
         // AJAX request for GeoJSON data
-        $.getJSON("data/elec2016_3857.geojson", function(data) {
+        $.getJSON("data/elec2016_3857_FT.geojson", function(data) {
           L.geoJson(data).addTo(map); console.log(data);
         });
 
