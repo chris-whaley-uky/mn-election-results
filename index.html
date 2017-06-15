@@ -163,7 +163,7 @@
 
 
         // AJAX request for GeoJSON data
-        $.getJSON("data/elec2016_WGS84.geojson", function(data) {
+        $.getJSON("data/elec2016.geojson", function(data) {
           L.geoJson(data).addTo(map); console.log(data);
         });
 
