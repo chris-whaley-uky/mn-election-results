@@ -164,17 +164,27 @@
 
         // AJAX request for GeoJSON data
         $.getJSON("data/elec2016_84.geojson", function(data) {
-          L.geoJson(data, {
+          var dataLayer = L.geoJson(data, {
                  style: function(feature) {
                  return {
                         color: '#dddddd',
                         weight: 0.5,
                         fillOpacity: 1,
                         fillColor: '#1f78b4'
-                 }
+                 };
                  }
           }).addTo(map);
+
+          drawMap(dataLayer)
         });
+
+        function drawMap(dataLayer) {
+
+             dataLayer.eachLayer(function(layer) {
+
+                 console.log(layer);
+             });
+        }  //end drawMap
 
 
 
