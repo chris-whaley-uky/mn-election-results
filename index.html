@@ -178,6 +178,7 @@
               }
           }).addTo(map);
 
+
           drawMap(dataLayer)
 
         });
@@ -190,7 +191,21 @@
                  layer.setStyle({
                         fillColor: getColor(layer.feature.properties.victory_margin, breaks)
                  });
+                 console.log(layer.feature.properties.pctname);
+
+                 // build the tooltip
+                 var tooltip = '<b>' + ' Precinct Name</b><br />' +
+                     layer.feature.properties.pctname;
+
+                 // bind the tooltip to the layer
+                 layer.bindTooltip(tooltip, {
+                     sticky: true
+                 });
+
+
             });
+
+
 
 
         }  //end drawMap
@@ -232,17 +247,17 @@
               }
           }
 
+          function drawLegend(breaks) {
+
+
+          }
 
 
 
 
-          //  var values = [];
-          //
-          //  dataLayer.eachLayer(function(layer) {
-          //      var value = layer.feature.properties[rVotes]-layer.feature.properties[dVotes];
-          //      values.push(value)
-          //  });
-          //  console.log(values);
+
+
+
 
 
 
