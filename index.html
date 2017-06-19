@@ -192,11 +192,13 @@
                  layer.setStyle({
                         fillColor: getColor(layer.feature.properties.victory_margin, breaks)
                  });
-                 console.log(layer.feature.properties.pctname);
+                 console.log(layer.feature.properties);
 
                  // build the tooltip
-                 var tooltip = '<b>' + ' Precinct Name</b><br />' +
-                     layer.feature.properties.pctname;
+                 var tooltip = '<b>' + ' Precinct Name:</b><br />' +
+                     layer.feature.properties.pctname; /* + '<br />' + '<b>' + ' Republican Vote:</b><br />' + layer.feature.properties.pct_usprsr
+                     + '%' */
+
 
                  // bind the tooltip to the layer
                  layer.bindTooltip(tooltip, {
