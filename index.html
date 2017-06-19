@@ -159,37 +159,90 @@
         //     ext: 'png'
         // }).addTo(map);
 
-        var rVotes = "usprsr",
-            dVotes = "usprsdfl";
+        // var rVotes = "PCT_USPRSR",
+        //     dVotes = "PCT_USPRSD";
+        //
+        //     console.log(rVotes);
 
 
         // AJAX request for GeoJSON data
-        $.getJSON("data/elec2016_84.geojson", function(data) {
+        $.getJSON("data/elec2016.geojson", function(data) {
           var dataLayer = L.geoJson(data, {
                  style: function(feature) {
-                 return {
-                        color: '#dddddd',
-                        weight: 0.5,
-                        fillOpacity: 1,
-                        fillColor: '#1f78b4'
-                 };
-                 }
+                   return {
+                          color: '#dddddd',
+                          weight: 0.5,
+                          fillOpacity: 1,
+                          fillColor: '#1f78b4'
+                   };
+              }
           }).addTo(map);
 
           drawMap(dataLayer)
+
         });
 
         function drawMap(dataLayer) {
 
-             dataLayer.eachLayer(function(layer) {
+            var breaks = getClassBreaks(dataLayer)
 
-                 console.log(layer.feature.properties);
-             });
+            dataLayer.eachLayer(function(layer) {
+                 layer.setStyle({
+                        fillColor: getColor(layer.feature.properties.victory_margin, breaks)
+                 });
+            });
+
+
         }  //end drawMap
 
         function getClassBreaks(dataLayer) {
 
-        }
+          var marginValues = [];
+
+          dataLayer.eachLayer(function(layer) {
+              var value = layer.feature.properties.victory_margin;
+              // console.log(layer.feature.properties.victory_margin);
+              marginValues.push(value)
+          });
+
+          var clusters = ss.ckmeans(marginValues, 2);
+
+          var breaks = clusters.map(function(cluster) {
+               return [cluster[0], cluster.pop()];
+          });
+
+          return breaks
+
+        } //end getClassBreaks
+
+
+          // var breaks = getClassBreaks(dataLayer);
+
+
+          function getColor(d, breaks) {
+
+            if(d < 0) {
+
+                return '#2b83ba';
+
+            } else if(d > 0) {
+
+                return '#d7191c';
+
+              }
+          }
+
+
+
+
+
+          //  var values = [];
+          //
+          //  dataLayer.eachLayer(function(layer) {
+          //      var value = layer.feature.properties[rVotes]-layer.feature.properties[dVotes];
+          //      values.push(value)
+          //  });
+          //  console.log(values);
 
 
 
