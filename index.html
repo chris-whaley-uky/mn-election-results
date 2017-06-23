@@ -164,7 +164,7 @@
         // AJAX request for GeoJSON data
         $.getJSON("data/elec2016.geojson", function(elec2016) {
 
-            Papa.parse('qgs/elec2012.csv', {
+            Papa.parse('data/elec2012.csv', {
 
                download: true,
                header: true,
@@ -175,6 +175,7 @@
                   console.log(elec2016);
                }
             }) //end Papa.parse
+
         }); //end getJSON
 
         function drawMap(dataLayer) {
@@ -246,6 +247,43 @@
           function updateMap() {
 
           }
+
+          function createSliderUI(dataLayer, breaks) {
+
+              // create Leaflet control for the slider
+              var sliderControl = L.control({
+
+                  position: 'bottomleft'
+              });
+
+              // when added to the map
+              sliderControl.onAdd = function(map) {
+
+                  // select an existing DOM element with an id of "ui-controls"
+                  var slider = L.DomUtil.get("ui-controls");
+
+                  // disable scrolling of map while using controls
+                  L.DomEvent.disableScrollPropagation(slider);
+
+                  // disable click events while using controls
+                  L.DomEvent.disableClickPropagation(slider);
+
+                  // return the slider from the onAdd method
+                  return slider;
+
+              }
+              // add the control to the map
+              sliderControl.addTo(map);
+
+              // select the form element
+              $(".year-slider")
+                  .on("input change", function() { // when user changes
+                      var currentYear = $(this).val(); // update the year
+                      updateMap(dataLayer, colorize, currentYear); // update the map with current timestamp
+                      $('.legend h3 span').html(currentYear); // update timestamp in legend heading
+                    });
+
+          } // end createSliderUI
 
 
             // var dataLayer = L.geoJson(data, {
