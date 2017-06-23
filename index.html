@@ -130,9 +130,9 @@
     <h1>2016 Presidental Election Results in Minnesota</h1>
     <div id="map"></div>
     <div id="ui-controls">
-        <label><span class="min"></span><span class="max">2015</span>
-            <input type="range" min = "2006", max= "2015",
-                   value = "2006", step= "1", class="year-slider">
+        <label><span class="min"></span><span class="max">2016</span>
+            <input type="range" min = "2012", max= "2016",
+                   value = "2016", step= "1", class="year-slider">
         </label>
     </div>
 
@@ -166,23 +166,57 @@
 
             Papa.parse('data/elec2012.csv', {
 
-               download: true,
-               header: true,
-               complete: function(data) {
+                download: true,
+                header: true,
+                complete: function(data) {
 
-                  console.log(data);
+                // loop through features
+                elec2016.features.forEach(function(feature) {
 
-                  console.log(elec2016);
-               }
+                // shortcut to the county name
+                var props = feature.properties;
+
+                // loop through the data
+                data.data.forEach(function(datum) {
+
+                // shortcut to the data name
+                var dataName = datum.COUNTYNAME;
+
+                // if they match
+                if(props.countyname === dataName) {
+
+                // store the data in an object on the feature
+                props.data = datum;
+                }
+
+                });
+                });
+
+                // verify your data has been bound here
+                console.log(elec2016);
+
+                drawMap(elec2016);
+
+                }
             }) //end Papa.parse
-
         }); //end getJSON
 
-        function processData() {
 
-        }
+        function drawMap(elec2016) {
 
-        function drawMap(dataLayer) {
+            var dataLayer = L.geoJson(elec2016, {
+                   style: function(feature) {
+                     return {
+                            color: '#dddddd',
+                            weight: 0.5,
+                            fillOpacity: 1,
+                            fillColor: '#1f78b4'
+                     };
+                }
+            }).addTo(map);
+
+            createSliderUI(dataLayer);
+
 
             var breaks = getClassBreaks(dataLayer)
 
@@ -248,8 +282,29 @@
               }
           }
 
-          function updateMap() {
+          function updateMap(dataLayer, getColor, currentYear) {
 
+            // loop through each layer
+            dataLayer.eachLayer(function(layer) {
+
+                // short-hand reference to properites
+                var props = layer.feature.properties;
+
+                // update the layer color given current timestamp
+                layer.setStyle({
+                    fillColor: getColor(d, breaks)
+                });
+
+                // build the tooltip
+                var tooltip = '<b>' + props['NAME'] + ' County</b><br />' +
+                    props[currentYear] + '% Unemployment';
+
+                // bind the tooltip to the layer
+                layer.bindTooltip(tooltip, {
+                    sticky: true
+                });
+
+            });
           }
 
           function createSliderUI(dataLayer, breaks) {
@@ -290,16 +345,6 @@
           } // end createSliderUI
 
 
-            // var dataLayer = L.geoJson(data, {
-            //        style: function(feature) {
-            //          return {
-            //                 color: '#dddddd',
-            //                 weight: 0.5,
-            //                 fillOpacity: 1,
-            //                 fillColor: '#1f78b4'
-            //          };
-            //     }
-            // }).addTo(map);
             //
             //
             // drawMap(dataLayer)
