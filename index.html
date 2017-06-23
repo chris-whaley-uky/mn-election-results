@@ -226,16 +226,7 @@
                  });
                 //  console.log(layer.feature.properties);
 
-                 // build the tooltip
-                 var tooltip = '<b>' + ' Precinct Name:</b><br />' +
-                     layer.feature.properties.pctname; /* + '<br />' + '<b>' + ' Republican Vote:</b><br />' + layer.feature.properties.pct_usprsr
-                     + '%' */
 
-
-                 // bind the tooltip to the layer
-                 layer.bindTooltip(tooltip, {
-                     sticky: true
-                 });
 
 
             });
@@ -296,8 +287,10 @@
                 });
 
                 // build the tooltip
-                var tooltip = '<b>' + props['NAME'] + ' County</b><br />' +
-                    props[currentYear] + '% Unemployment';
+                var tooltip = '<b>' + ' Precinct Name:</b><br />' +
+                    layer.feature.properties.pctname; /* + '<br />' + '<b>' + ' Republican Vote:</b><br />' + layer.feature.properties.pct_usprsr
+                    + '%' */
+
 
                 // bind the tooltip to the layer
                 layer.bindTooltip(tooltip, {
