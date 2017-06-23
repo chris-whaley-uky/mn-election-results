@@ -163,20 +163,18 @@
 
         // AJAX request for GeoJSON data
         $.getJSON("data/elec2016.geojson", function(elec2016) {
-          var dataLayer = L.geoJson(data, {
-                 style: function(feature) {
-                   return {
-                          color: '#dddddd',
-                          weight: 0.5,
-                          fillOpacity: 1,
-                          fillColor: '#1f78b4'
-                   };
-              }
-          }).addTo(map);
 
+            Papa.Parse('data/elec2012.csv', {
 
-          drawMap(dataLayer)
+               download: true,
+               header: true,
+               complete: function(data) {
 
+                  console.log(data);
+
+                  console.log(elec2016);
+               }
+            })
         });
 
         function drawMap(dataLayer) {
@@ -248,6 +246,23 @@
           function updateMap() {
 
           }
+
+
+            var dataLayer = L.geoJson(data, {
+                   style: function(feature) {
+                     return {
+                            color: '#dddddd',
+                            weight: 0.5,
+                            fillOpacity: 1,
+                            fillColor: '#1f78b4'
+                     };
+                }
+            }).addTo(map);
+
+
+            drawMap(dataLayer)
+
+
 
 
 
